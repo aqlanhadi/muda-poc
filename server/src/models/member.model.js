@@ -4,13 +4,12 @@ const { toJSON, paginate } = require('./plugins')
 
 const GeoSchema = new mongoose.Schema(
     {
-        type: {
-            type: String,
-            enum: ['Point'],
+        lat: {
+            type: Number,
             required: true
         },
-        coordinates: {
-            type: [Number],
+        lng: {
+            type: Number,
             required: true
         }
     }
@@ -18,14 +17,15 @@ const GeoSchema = new mongoose.Schema(
 
 const addressSchema = mongoose.Schema(
     {
-        houseNumber: String,
-        street: String,
-        street2: String,
-        city: String,
-        postcode: Number,
-        state: String,
+        streetNumber: String,
+        route: String,
+        sublocality: String,
+        locality: String,
+        postal_code: Number,
+        administrative_area_level_1: String,
         country: String,
-        loc: GeoSchema
+        loc: GeoSchema,
+        addressObject: Object
     }
 )
 
@@ -74,8 +74,16 @@ const memberSchema = mongoose.Schema(
             type: addressSchema,
             required: true,
         },
-        residentialAddress: {
+        homeAddress: {
             type: addressSchema,
+            required: true,
+        },
+        votingIsSameAsHome: {
+            type: Boolean,
+            required: true,
+        },
+        declaration: {
+            type: Boolean,
             required: true,
         },
         isVerified: {
